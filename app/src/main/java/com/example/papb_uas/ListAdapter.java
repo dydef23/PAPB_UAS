@@ -1,6 +1,7 @@
 package com.example.papb_uas;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class ListAdapter extends RecyclerView.Adapter {
 
         vh.itemDo.setText(i.getWhat());
         vh.itemTime.setText(i.getTime());
+        Log.i("Test", i.getTime());
     }
 
     @Override

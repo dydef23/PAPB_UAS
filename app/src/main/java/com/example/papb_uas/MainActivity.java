@@ -38,30 +38,31 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<ToDoList> list;
     Gson gson;
     Context ctx;
-
+    Handler h;
+    Thread t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gson = new Gson();
-        list = new ArrayList<>();
-        rvList = findViewById(R.id.rvList);
+        this.gson = new Gson();
+        this.list = new ArrayList<>();
+        this.rvList = findViewById(R.id.rvList);
         rvList.setHasFixedSize(true);
         rvList.setLayoutManager(new LinearLayoutManager(this));
         reqQue = Volley.newRequestQueue(this);
         this.ctx = this;
+        this.h = new Handler(Looper.getMainLooper());
         jsonParse();
     }
 
     public void jsonParse(){
         String url = "https://mgm.ub.ac.id/todo.php";
-        Handler h = new Handler(Looper.getMainLooper());
-        Thread t = new Thread(new Runnable() {
+        t = new Thread(new Runnable() {
             @Override
             public void run() {
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                StringRequest stringReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         list = gson.fromJson(response, new TypeToken<List<ToDoList>>() {
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                     }
                 });
-                reqQue.add(stringRequest);
+                reqQue.add(stringReq);
             }
         });
         t.start();
